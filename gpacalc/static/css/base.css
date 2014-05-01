@@ -1,5 +1,6 @@
 body {
 	padding: 1em;
+	font-family: sans-serif;
 }
 
 header {
@@ -44,10 +45,14 @@ a:visited {
 	color: rgb(0, 0, 238);
 }
 
+div.semester-listings {
+	float: left;
+	margin-bottom: 1.5em;
+}
+
 div.semester-listing {
 	float: left;
 	margin-right: 2em;
-	margin-bottom: 1.5em;
 }
 
 table {
@@ -60,8 +65,12 @@ thead tr {
 	border-bottom: 1px solid black;
 }
 
-td {
-	min-width: 5em;
+th:first-of-type {
+	padding: 0;
+}
+
+th {
+	padding: 0 .5em;
 }
 
 tbody td {
@@ -79,6 +88,10 @@ label {
 
 input[type="number"] {
 	width: 4em;
+}
+
+footer {
+	margin-top: 3em;
 }
 
 .block {
@@ -103,4 +116,10 @@ input[type="number"] {
 	font-weight: bold;
 }
 
+.extra-wide {
+	min-width: 7em;
+}
 
+.center-text {
+	text-align: center;
+}

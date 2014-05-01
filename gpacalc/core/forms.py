@@ -13,7 +13,8 @@ UClassFormset = modelformset_factory(
     UClass, 
     fields=['name', 'credits', 'grade'],
     form=UClassForm,
-    extra=5
+    extra=5,
+    can_delete=True
 )
-            
+
 SemesterForm = modelform_factory(Semester, fields=['description'])

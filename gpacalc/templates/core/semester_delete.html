@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block h2 %}Delete semester{% endblock %}
+
+{% block content %}
+<form method="post">{% csrf_token %}
+    <p>Are you sure you wish to delete this semester?</p>
+    <input type="submit" value="Confirm" />
+</form>
+{% endblock content %}

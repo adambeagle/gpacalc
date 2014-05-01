@@ -1,45 +1,56 @@
 {% extends 'base.html' %}
 
-{% block subheader %}Index{% endblock %}
+{% block subheader %}Semester Index{% endblock %}
 
 {% block content %}
     <div class="basic-space">
         <a href="{% url 'create_semester' %}">Create new semester</a>
     </div>
 
-    {% for s in semester_list %}
-        <div class="semester-listing basic-space">
-            <h3>{% if s.description %}{{ s }}{% else %}Semester {{ forloop.counter }}{% endif %}<small> <a href="{% url 'update_semester' s.id %}">(edit)</a></small></h3>
-            <h4>GPA: {{ s.gpa|floatformat:3 }}</h4>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Credits</th>
-                        <th>Grade</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for c in s.uclass_set.all %}
-                    <tr>
-                        <td>{{ c.name }}</td>
-                        <td>{{ c.credits }}</td>
-                        <td>{{ c.grade }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td>(no classes)</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% empty %}
-    {% endfor %}
+    <div class="semester-listings">
+        {% for s in semester_list %}
+            <div class="semester-listing basic-space">
+                <h3>{% if s.description %}{{ s }}{% else %}Semester {{ forloop.counter }}{% endif %}
+                    <small> (
+                        <a href="{% url 'update_semester' s.id %}">edit</a> | 
+                        <a href="{% url 'delete_semester' s.id %}">delete</a> )
+                    </small>
+                </h3>
+                <h4>GPA: {{ s.gpa|floatformat:3 }}</h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="extra-wide">Name</th>
+                            <th>Credits</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in s.uclass_set.all %}
+                        <tr>
+                            <td>{{ c.name }}</td>
+                            <td class="center-text">{{ c.credits }}</td>
+                            <td class="center-text">{{ c.grade }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td>(no classes)</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% empty %}
+        {% endfor %}
+    </div>
     
     <h4 class="clear basic-space"><em>Cumulative GPA:</em> {{ cumulative_gpa|floatformat:3 }}</h4>
 
+    <footer>
+        <span class="block">&copy; 2014 Adam Beagle</span>
+        <span class="block">View source <a href="">at Github</a></span>
+    </footer>
 {% endblock content %}

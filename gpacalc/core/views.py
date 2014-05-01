@@ -1,6 +1,7 @@
+from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import DeleteView, ListView
 
 from .forms import SemesterForm, UClassFormset
 from .models import calculate_gpa, Semester, UClass
@@ -20,15 +21,26 @@ def create_semester(request):
             semesterForm.save()
             classesFormset.save()
             
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse_lazy('semester_index'))
     else:
         semesterForm = SemesterForm()
         classesFormset = UClassFormset(queryset=UClass.objects.none())
 
     return render(request, 'core/semester_create.html', {
         'semester_form' : semesterForm,
-        'classes_formset' : classesFormset
+        'classes_formset' : classesFormset,
+        'is_update' : False
     })
+    
+#~ def delete_semester(request, pk):
+    #~ if not Semester.objects.filter(pk=pk).exists():
+        #~ raise Http404
+    
+    #~ if request.method == 'POST':
+        #~ Semester.objects.get(pk=semester_id).delete()
+        #~ return HttpResponseRedirect(reverse('semester_index'))
+    
+    #~ return render(request, 'core/semester_delete.html')
     
 def update_semester(request, pk):
     semester_id = pk
@@ -47,7 +59,7 @@ def update_semester(request, pk):
             semesterForm.save()
             classesFormset.save()
             
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse_lazy('semester_index'))
     else:
         semesterForm = SemesterForm(
             instance=Semester.objects.get(id=semester_id)
@@ -58,7 +70,8 @@ def update_semester(request, pk):
 
     return render(request, 'core/semester_create.html', {
         'semester_form' : semesterForm,
-        'classes_formset' : classesFormset
+        'classes_formset' : classesFormset,
+        'is_update' : True
     })
 
 class SemestersIndex(ListView):
@@ -71,3 +84,7 @@ class SemestersIndex(ListView):
             
         return context
 
+class SemesterDeleteView(DeleteView):
+    model = Semester
+    template_name = 'core/semester_delete.html'
+    success_url = reverse_lazy('semester_index')
