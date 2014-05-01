@@ -31,17 +31,7 @@ def create_semester(request):
         'classes_formset' : classesFormset,
         'is_update' : False
     })
-    
-#~ def delete_semester(request, pk):
-    #~ if not Semester.objects.filter(pk=pk).exists():
-        #~ raise Http404
-    
-    #~ if request.method == 'POST':
-        #~ Semester.objects.get(pk=semester_id).delete()
-        #~ return HttpResponseRedirect(reverse('semester_index'))
-    
-    #~ return render(request, 'core/semester_delete.html')
-    
+
 def update_semester(request, pk):
     semester_id = pk
     
