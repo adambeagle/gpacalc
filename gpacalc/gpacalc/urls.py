@@ -1,12 +1,14 @@
 from django.conf.urls import patterns, include, url
-
 from django.contrib import admin
+
+from core.views import create_semester, update_semester, SemestersIndex
+
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'gpacalc.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
+    url(r'^$', SemestersIndex.as_view()),
+    url(r'^new/semester/$', create_semester),
+    url(r'^update/semester/(?P<pk>\w+)/$', update_semester),
     url(r'^admin/', include(admin.site.urls)),
 )

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>Cumulative GPA: {{ cumulative_gpa|floatformat:3 }}</p>
+    <a href="/new/semester/">Create new semester</a>
+    {% for s in semester_list %}
+        <h3>{{ s }} <small><a href="/update/semester/{{ s.id }}">(edit)</a></small></h3>
+        <h4>GPA: {{ s.gpa|floatformat:3 }}</h4>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Credits</th>
+                    <th>Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in s.uclass_set.all %}
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.credits }}</td>
+                    <td>{{ c.grade }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td></td>
+                    <td>(no classes)</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% empty %}
+        <p>No semesters created yet!</p>
+    {% endfor %}
+{% endblock content %}
