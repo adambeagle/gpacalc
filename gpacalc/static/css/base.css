@@ -1,0 +1,106 @@
+body {
+	padding: 1em;
+}
+
+header {
+	margin-bottom: 26px;
+}
+
+h1 {
+	font-size: 1.8em;
+	font-weight: bold;
+}
+
+h1 a {
+	color: inherit;
+	text-decoration: none;
+}
+
+h1 a:visited {
+	color: inherit;
+}
+
+h2 {
+	font-size: 1.6em;
+}
+
+h3 {
+	font-size: 1.5em;
+}
+
+h4 {
+	font-size: 1.2em;
+}
+
+small {
+	font-size: 65%;
+}
+
+p {
+	margin: 1em 0;
+}
+
+a:visited {
+	color: rgb(0, 0, 238);
+}
+
+div.semester-listing {
+	float: left;
+	margin-right: 2em;
+	margin-bottom: 1.5em;
+}
+
+table {
+	margin-top: .5em;
+}
+
+thead tr {
+	text-align: left;
+	font-weight: bold;
+	border-bottom: 1px solid black;
+}
+
+td {
+	min-width: 5em;
+}
+
+tbody td {
+	padding: .3em 0;
+}
+
+em {
+	font-weight: bold;
+}
+
+label {
+	display: inline-block;
+	min-width: 3.5em;
+}
+
+input[type="number"] {
+	width: 4em;
+}
+
+.block {
+	display: block;
+}
+
+.clear {
+	clear: both;
+}
+
+.basic-space {
+	margin-top: 1.5em;
+}
+
+
+.errorlist {
+	color: red;
+	margin-bottom: -1em;
+}
+
+.form-field-required label {
+	font-weight: bold;
+}
+
+

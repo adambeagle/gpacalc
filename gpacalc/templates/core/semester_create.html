@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block content %}
-    <h2>Create new semester</h2>
+{% block subheader %}Create Semester{% endblock %}
 
+{% block content %}
     <form method="post" action="">{% csrf_token %}
         {{ semester_form.as_p }}
         <input type="submit" value="Submit" />
-        <h2>Create classes</h2>
+        <h3 class="basic-space">Add classes</h2>
         <hr />
         {{ classes_formset.management_form }}
         {% for cform in classes_formset %}

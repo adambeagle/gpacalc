@@ -1,37 +1,45 @@
 {% extends 'base.html' %}
 
+{% block subheader %}Index{% endblock %}
+
 {% block content %}
-    <p>Cumulative GPA: {{ cumulative_gpa|floatformat:3 }}</p>
-    <a href="/new/semester/">Create new semester</a>
+    <div class="basic-space">
+        <a href="{% url 'create_semester' %}">Create new semester</a>
+    </div>
+
     {% for s in semester_list %}
-        <h3>{{ s }} <small><a href="/update/semester/{{ s.id }}">(edit)</a></small></h3>
-        <h4>GPA: {{ s.gpa|floatformat:3 }}</h4>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Credits</th>
-                    <th>Grade</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for c in s.uclass_set.all %}
-                <tr>
-                    <td>{{ c.name }}</td>
-                    <td>{{ c.credits }}</td>
-                    <td>{{ c.grade }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td></td>
-                    <td>(no classes)</td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="semester-listing basic-space">
+            <h3>{% if s.description %}{{ s }}{% else %}Semester {{ forloop.counter }}{% endif %}<small> <a href="{% url 'update_semester' s.id %}">(edit)</a></small></h3>
+            <h4>GPA: {{ s.gpa|floatformat:3 }}</h4>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Credits</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in s.uclass_set.all %}
+                    <tr>
+                        <td>{{ c.name }}</td>
+                        <td>{{ c.credits }}</td>
+                        <td>{{ c.grade }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td>(no classes)</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% empty %}
-        <p>No semesters created yet!</p>
     {% endfor %}
+    
+    <h4 class="clear basic-space"><em>Cumulative GPA:</em> {{ cumulative_gpa|floatformat:3 }}</h4>
+
 {% endblock content %}

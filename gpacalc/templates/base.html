@@ -1,16 +1,20 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Adam's Handy-dandy GPA Calculator</title>
-    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
+    {% block extra_css %}{% endblock %}
     {% block extra_js %}{% endblock %}
 </head>
 
 <body>
     <header>
-        <h1>Adam's Handy-dandy GPA Calculator</h1>
+        <h1><a href="/">Adam's Handy-dandy GPA Calculator</a></h1>
+        <h2>{% block subheader %}{% endblock %}</h2>
     </header>
     
     {% block content %}{% endblock %}

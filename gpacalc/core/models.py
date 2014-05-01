@@ -18,6 +18,9 @@ def calculate_gpa(classes):
 class Semester(models.Model):
     description = models.CharField(max_length=25, blank=True)
     
+    class Meta:
+        ordering = ['id']
+    
     def __str__(self):
         if self.description:
             return self.description
