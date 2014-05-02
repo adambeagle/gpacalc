@@ -11,9 +11,9 @@ body {
 header {
 	text-align: center;
 	padding: 1em;
-	background: #EEE;
+	background: #00274c;
+	color: #ffcb05;
 }
-
 
 header a {
 	color: inherit;
@@ -33,14 +33,16 @@ h1 {
 h2 {
 	font-size: 1.6em;
 	margin-top: .3em;
+	color: #eee;
 }
 
 h3 {
 	font-size: 1.5em;
+	margin-bottom: .2em;
 }
 
 h4 {
-	font-size: 1.2em;
+	font-size: 1.1em;
 }
 
 small {
@@ -71,6 +73,7 @@ div.semester-listings {
 div.semester-listing {
 	float: left;
 	margin-right: 2em;
+	margin-bottom: .5em;
 }
 
 table {
@@ -153,6 +156,10 @@ footer {
 
 .basic-space {
 	margin-top: 1.5em;
+}
+
+.small-space {
+	margin-top: .5em;
 }
 
 .errorlist {
