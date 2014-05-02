@@ -6,7 +6,6 @@ from django.views.generic import DeleteView, ListView
 from .forms import SemesterForm, UClassFormset
 from .models import calculate_gpa, Semester, UClass
 
-
 def create_semester(request):
     if request.method == 'POST': 
         semesterForm = SemesterForm(request.POST)
@@ -68,11 +67,9 @@ class SemestersIndex(ListView):
     queryset = Semester.objects.select_related('uclass')
     
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(*kwargs)
-        context['cumulative_gpa'] = calculate_gpa(
-            UClass.objects.all())
-            
-        return context
+        kwargs['cumulative_gpa'] = calculate_gpa(UClass.objects.all())
+        return super().get_context_data(**kwargs)
+
 
 class SemesterDeleteView(DeleteView):
     model = Semester
