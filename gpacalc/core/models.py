@@ -33,7 +33,7 @@ class Semester(models.Model):
     
 class UClass(models.Model):
     semester = models.ForeignKey(Semester)
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, blank=True)
     credits = models.PositiveSmallIntegerField()
     grade = models.DecimalField(max_digits=4, decimal_places=3)
     

@@ -31,7 +31,7 @@
                     <tbody>
                         {% for c in s.uclass_set.all %}
                         <tr>
-                            <td>{{ c.name }}</td>
+                            <td>{% if c.name %}{{ c.name }}{% else %}Class {{ forloop.counter }}{% endif %}</td>
                             <td class="center-text">{{ c.credits }}</td>
                             <td class="center-text">{{ c.grade }}</td>
                         </tr>

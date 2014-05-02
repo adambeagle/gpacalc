@@ -9,6 +9,7 @@
         {{ semester_form.as_p }}
         <input type="submit" value="Submit" />
         <h3 class="basic-space">{% if is_update %}Update{% else %}Add{% endif %} classes</h2>
+        <span class="block"><small><i>*Bold fields are required.</i></small></span>
         <hr />
         {{ classes_formset.management_form }}
         {% for cform in classes_formset %}
