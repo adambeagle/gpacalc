@@ -44,7 +44,15 @@ h4 {
 }
 
 small {
+	font-size: 80%;
+}
+
+h3 small {
 	font-size: 65%;
+}
+
+i {
+	font-style: italic;
 }
 
 p {
