@@ -3,6 +3,8 @@
 {% block subheader %}Semester Index{% endblock %}
 
 {% block content %}
+    <h4><em>Cumulative GPA:</em> {{ cumulative_gpa|floatformat:3 }}</h4>
+    
     <div class="basic-space">
         <a href="{% url 'create_semester' %}">Create new semester</a>
     </div>
@@ -47,9 +49,7 @@
         {% endfor %}
     </div>
     
-    <h4 class="clear basic-space"><em>Cumulative GPA:</em> {{ cumulative_gpa|floatformat:3 }}</h4>
-
-    <footer>
+    <footer class="clear">
         <span class="block">&copy; 2014 Adam Beagle</span>
         <span class="block">View source <a href="https://github.com/adambeagle/gpacalc">at Github</a></span>
     </footer>

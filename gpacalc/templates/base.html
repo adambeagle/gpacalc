@@ -14,10 +14,12 @@
 <body>
     <header>
         <h1><a href="/">Handy-dandy UMich GPA Calculator</a></h1>
-        <h2>{% block subheader %}{% endblock %}</h2>
+        <h2>--{% block subheader %}{% endblock %}--</h2>
     </header>
     
+    <div id="content">
     {% block content %}{% endblock %}
+    </div>
 </body>
 
 </html>
