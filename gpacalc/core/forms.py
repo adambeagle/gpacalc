@@ -8,6 +8,14 @@ class UClassForm(ModelForm):
     fields=['name', 'credits', 'grade']
     error_css_class = 'form-field-error'
     required_css_class = 'form-field-required'
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['grade'].widget.attrs.update(
+            # Note Decimal attributes in model give an effective
+            # 'max' of 9.999 for this field.
+            {'min' : '0.0',}
+        )
 
 UClassFormset = modelformset_factory(
     UClass, 
