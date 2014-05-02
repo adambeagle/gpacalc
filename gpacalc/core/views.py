@@ -42,6 +42,7 @@ def update_semester(request, pk):
     if request.method == 'POST': 
         semesterForm = SemesterForm(request.POST)
         classesFormset = UClassFormset(request.POST)
+        classesFormset.can_delete = True 
         
         if semesterForm.is_valid() and classesFormset.is_valid():
             semesterForm.instance.id = semester_id
