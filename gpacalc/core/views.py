@@ -54,8 +54,9 @@ def update_semester(request, pk):
             instance=Semester.objects.get(id=semester_id)
         )
         classesFormset = UClassFormset(
-            queryset=UClass.objects.filter(semester=semester_id)
+            queryset=UClass.objects.filter(semester=semester_id),
         )
+        classesFormset.can_delete = True
 
     return render(request, 'core/semester_create.html', {
         'semester_form' : semesterForm,
