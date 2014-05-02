@@ -3,6 +3,12 @@ from decimal import Decimal
 from django.db import models
 
 def calculate_gpa(classes):
+    """
+    Return cumulative GPA of all classes found in iterable 'classes.'
+    
+    Assumes each element of 'classes' has 'credits' and 'grade' attributes,
+    where 'grade' is a number.
+    """
     if not classes:
         return 0.0
     
@@ -14,6 +20,25 @@ def calculate_gpa(classes):
         totalGrade += c.credits * c.grade
         
     return totalGrade / totalCredits
+    
+# TODO: The current single-user system will assume there is only one grade 
+# scale object. Eventually these will need a Foreign Key to a user.
+class GradeScale(models.Model):
+    pass
+    
+class LetterGrade(models.Model):
+    """
+    Represents a letter grade and its GPA value equivalent. For example, 
+    a descriptor of 'A' would likely have the value 4.0.
+    
+    'value' is allowed to be blank/null to allow pass/fail grades that do
+    not affect a cumulative GPA (common examples are 'H' and 'S').
+    """
+    scale = models.ForeignKey(GradeScale)
+    descriptor = models.CharField(max_length=2)
+    value = models.DecimalField(max_digits=4, decimal_places=3, 
+        null=True, blank=True
+    )
 
 class Semester(models.Model):
     description = models.CharField(max_length=25, blank=True)
