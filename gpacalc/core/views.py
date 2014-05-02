@@ -7,6 +7,7 @@ from .forms import SemesterForm, UClassFormset
 from .models import calculate_gpa, Semester, UClass
 
 def create_semester(request):
+    # If POST, validate both forms, save, and redirect to index
     if request.method == 'POST': 
         semesterForm = SemesterForm(request.POST)
         classesFormset = UClassFormset(request.POST)
@@ -16,15 +17,18 @@ def create_semester(request):
             
             for form in classesFormset:
                 form.instance.semester_id = semesterInstance.id
-                
-            semesterForm.save()
+
             classesFormset.save()
             
             return HttpResponseRedirect(reverse_lazy('semester_index'))
+    
+    # If GET, prepare empty forms.
     else:
         semesterForm = SemesterForm()
         classesFormset = UClassFormset(queryset=UClass.objects.none())
-
+        
+    # Note if either form invalid in a POST, control jumps here and page
+    # reloaded with forms containing error messages, etc.
     return render(request, 'core/semester_create.html', {
         'semester_form' : semesterForm,
         'classes_formset' : classesFormset,
@@ -34,6 +38,7 @@ def create_semester(request):
 def update_semester(request, pk):
     semester_id = pk
     
+    # If POST, validate both forms, save, and redirect to index
     if request.method == 'POST': 
         semesterForm = SemesterForm(request.POST)
         classesFormset = UClassFormset(request.POST)
@@ -44,11 +49,13 @@ def update_semester(request, pk):
             
             for form in classesFormset:
                 form.instance.semester_id = semester_id
-                
-            semesterForm.save()
+
             classesFormset.save()
             
             return HttpResponseRedirect(reverse_lazy('semester_index'))
+    
+    # If GET, grab semester and its classes via pk, and instantiate forms
+    # with that data.
     else:
         semesterForm = SemesterForm(
             instance=Semester.objects.get(id=semester_id)
@@ -56,8 +63,13 @@ def update_semester(request, pk):
         classesFormset = UClassFormset(
             queryset=UClass.objects.filter(semester=semester_id),
         )
-        classesFormset.can_delete = True
+        
+        # Class deletion allowed here; Semester deletion handled in 
+        # SemesterDeleteView
+        classesFormset.can_delete = True 
 
+    # Note if either form invalid in a POST, control jumps here and page
+    # reloaded with forms containing error messages, etc.
     return render(request, 'core/semester_create.html', {
         'semester_form' : semesterForm,
         'classes_formset' : classesFormset,
@@ -70,7 +82,6 @@ class SemestersIndex(ListView):
     def get_context_data(self, **kwargs):
         kwargs['cumulative_gpa'] = calculate_gpa(UClass.objects.all())
         return super().get_context_data(**kwargs)
-
 
 class SemesterDeleteView(DeleteView):
     model = Semester
