@@ -41,6 +41,8 @@ class LetterGrade(models.Model):
     )
     
     class Meta:
+        ordering = ['-value']
+        
         # This ensures an individual GradeScale cannot have multiple
         # LetterGrades with the same descriptor, e.g. a grade scale
         # can only have a single 'value' for the descriptor 'A+'

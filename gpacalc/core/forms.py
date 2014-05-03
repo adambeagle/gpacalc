@@ -5,8 +5,6 @@ from django.forms.models import (BaseModelFormSet, modelform_factory,
 from .models import LetterGrade, Semester, UClass
 
 class LetterGradeForm(ModelForm):
-    model = LetterGrade
-    fields = ['descriptor', 'value']
     error_css_class = 'form-field-error'
     
     def __init__(self, *args, **kwargs):
@@ -16,10 +14,12 @@ class LetterGradeForm(ModelForm):
         )
         
         self.fields['descriptor'].label = 'Grade'
+        
+    class Meta:
+        model = LetterGrade
+        fields = ['descriptor', 'value']
 
 class UClassForm(ModelForm):
-    model = UClass
-    fields = ['name', 'credits', 'grade']
     error_css_class = 'form-field-error'
     required_css_class = 'form-field-required'
     
@@ -30,6 +30,10 @@ class UClassForm(ModelForm):
             # 'max' of 9.999 for this field.
             {'min' : '0.0',}
         )
+        
+    class Meta:
+        model = UClass
+        fields = ['name', 'credits', 'grade']
 
 class BaseLetterGradeFormSet(BaseModelFormSet):
     def clean(self):
@@ -66,7 +70,6 @@ class BaseLetterGradeFormSet(BaseModelFormSet):
 
 LetterGradeFormSet = modelformset_factory(
     LetterGrade,
-    fields=['descriptor', 'value'],
     form=LetterGradeForm,
     formset=BaseLetterGradeFormSet,
     extra=2
@@ -74,7 +77,6 @@ LetterGradeFormSet = modelformset_factory(
 
 UClassFormSet = modelformset_factory(
     UClass, 
-    fields=['name', 'credits', 'grade'],
     form=UClassForm,
     extra=5,
 )
