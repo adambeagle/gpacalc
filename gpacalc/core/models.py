@@ -39,6 +39,12 @@ class LetterGrade(models.Model):
     value = models.DecimalField(max_digits=4, decimal_places=3, 
         null=True, blank=True
     )
+    
+    class Meta:
+        # This ensures an individual GradeScale cannot have multiple
+        # LetterGrades with the same descriptor, e.g. a grade scale
+        # can only have a single 'value' for the descriptor 'A+'
+        unique_together = ('scale', 'descriptor')
 
 class Semester(models.Model):
     description = models.CharField(max_length=25, blank=True)
