@@ -3,11 +3,14 @@
 {% block subheader %}Semester Index{% endblock %}
 
 {% block content %}
-    <h4><em>Cumulative GPA:</em> {{ cumulative_gpa|floatformat:3 }}</h4>
-    
-    <div class="basic-space">
-        <a href="{% url 'create_semester' %}">Add semester</a>
-    </div>
+    <nav>
+        <h4><em>Options:</em></h4>
+        <ul>
+            <li><a href="{% url 'create_semester' %}">Add semester</a></li>
+            <li><a href="{% url 'update_gradescale' %}">Edit grade scale</a></li>
+        </ul>
+    </nav>
+    <h4 class="basic-space"><em>Cumulative GPA:</em> {{ cumulative_gpa|floatformat:3 }}</h4>
 
     <div class="semester-listings">
         {% for s in semester_list %}

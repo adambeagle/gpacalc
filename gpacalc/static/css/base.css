@@ -29,6 +29,10 @@ h1 {
 	font-weight: bold;
 }
 
+nav li {
+	margin: .3em .5em;
+}
+
 
 h2 {
 	font-size: 1.6em;
@@ -117,14 +121,12 @@ input {
 	padding: 0;
 }
 
-input[type="number"] {
-	width: 4em;
+input[type="submit"] {
+	padding: .3em;
 }
 
-@media screen and (min-width: 321px) {
-	.vsmall {
-		display: none;
-	}
+input[type="number"] {
+	width: 4em;
 }
 
 @media screen and (min-width: 640px) {
@@ -136,9 +138,15 @@ input[type="number"] {
 		text-align: left;
 	}
 	
+	/* Leave commented until error rendering issues fixed.
 	form li {
 		display: inline;
 		margin-right: 1em;
+	}*/
+	
+	label {
+		min-width: initial;
+		margin-right: .2em;
 	}
 }
 
@@ -158,6 +166,10 @@ footer {
 	margin-top: 1.5em;
 }
 
+.basic-space-bottom {
+	margin-bottom: 1.5em;
+}
+
 .small-space {
 	margin-top: .5em;
 }
@@ -171,7 +183,7 @@ footer {
 }
 
 .form-field-error label {
-	color: red;
+	color: #b00;
 }
 
 .extra-wide {
@@ -181,3 +193,7 @@ footer {
 .center-text {
 	text-align: center;
 }
+
+.small-text-input {
+	width: 3em;
+)
