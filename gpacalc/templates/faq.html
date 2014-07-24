@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block subheader %}FAQ{% endblock %}
+
+{% block content %}
+<a href="{% url 'semester_index' %}">Back to semester index</a>
+<ol class="basic-space">
+    <li>
+        <h3>Is my class data anonymous?</h3>
+        <p>Yes. When you first visit this site your browser is assigned a random key which is placed in a cookie. This key is required to view or edit any data you provide. No other data about your computer, location, etc. is examined or retained. Though the site owner may access the database containing class data, there is nothing that could tie any data back to a particular person.</p>
+    </li>
+    
+    <li>
+        <h3>Do I need to re-enter my class data every time I visit?</h3>
+        <p>To maintain anonimity and simplicity, this site uses a cookie with a random key which is used to retrieve data. The drawback of this system is the cookie is unique to the computer and browser with which you visited the site. To retain your data, always visit from the same computer with the same browser, and be sure you're not in incognito/private browsing mode. The cookie from this site will expire after 6 months.</p>
+    </li>
+    
+    <li>
+        <h3>How can I add more classes to a semester?</h3>
+        <p>Every time you edit a semester, there will be five empty spaces for new classes.</p>
+    </li>
+</ol>
+{% endblock content %}

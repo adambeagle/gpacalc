@@ -7,7 +7,7 @@
         <h4><em>Options:</em></h4>
         <ul>
             <li><a href="{% url 'create_semester' %}">Add semester</a></li>
-            <li><a href="{% url 'update_gradescale' %}">Edit grade scale</a></li>
+            <li><a href="{% url 'faq' %}">FAQ</a></li>
         </ul>
     </nav>
     <h4 class="basic-space"><em>Cumulative GPA:</em> {{ cumulative_gpa|floatformat:3 }}</h4>
@@ -50,6 +50,7 @@
                 <h4 class="small-space"><em>GPA:</em> {{ s.gpa|floatformat:3 }}</h4>
             </div>
         {% empty %}
+            <p><i>No semesters. Click 'Add Semester' to begin.</i></p>
         {% endfor %}
     </div>
     

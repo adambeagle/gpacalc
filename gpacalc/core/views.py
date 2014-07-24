@@ -1,10 +1,12 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import DeleteView, FormView, ListView
 
-from .forms import LetterGradeFormSet, SemesterForm, UClassFormSet
-from .models import calculate_gpa, LetterGrade, Semester, UClass
+from .forms import SemesterForm, UClassFormSet
+from .models import (calculate_gpa, LetterGrade, Semester, Session,
+    UClass)
 
 def create_semester(request):
     # If POST, validate both forms, save, and redirect to index
@@ -13,7 +15,11 @@ def create_semester(request):
         classesFormSet = UClassFormSet(request.POST)
         
         if semesterForm.is_valid() and classesFormSet.is_valid():
-            semesterInstance = semesterForm.save()
+            semesterInstance = semesterForm.save(commit=False)
+            semesterInstance.session = Session.objects.get(
+                    pk=request.session.session_key
+            )
+            semesterInstance.save()
             
             for form in classesFormSet:
                 form.instance.semester_id = semesterInstance.id
@@ -36,7 +42,13 @@ def create_semester(request):
     })
 
 def update_semester(request, pk):
-    semester_id = pk
+    # Ensure users can only access semesters from their own session
+    try:
+        semester = Semester.objects.get(pk=pk, 
+            session=request.session.session_key
+        )
+    except ObjectDoesNotExist:
+        raise Http404
     
     # If POST, validate both forms, save, and redirect to index
     if request.method == 'POST': 
@@ -45,11 +57,14 @@ def update_semester(request, pk):
         classesFormSet.can_delete = True 
         
         if semesterForm.is_valid() and classesFormSet.is_valid():
-            semesterForm.instance.id = semester_id
+            semesterForm.instance.id = semester.id
+            semesterForm.instance.session = Session.objects.get(
+                pk=request.session.session_key
+            )
             semesterForm.save()
             
             for form in classesFormSet:
-                form.instance.semester_id = semester_id
+                form.instance.semester_id = semester.id
 
             classesFormSet.save()
             
@@ -59,10 +74,10 @@ def update_semester(request, pk):
     # with that data.
     else:
         semesterForm = SemesterForm(
-            instance=Semester.objects.get(id=semester_id)
+            instance=semester
         )
         classesFormSet = UClassFormSet(
-            queryset=UClass.objects.filter(semester=semester_id),
+            queryset=UClass.objects.filter(semester=semester.id),
         )
         
         # Class deletion allowed here; Semester deletion handled in 
@@ -76,37 +91,29 @@ def update_semester(request, pk):
         'classes_formset' : classesFormSet,
         'is_update' : True
     })
-    
-class GradeScaleUpdateView(FormView):
-    model = LetterGrade
-    form_class = LetterGradeFormSet
-    template_name = 'core/gradescale_update.html'
-    success_url = reverse_lazy('semester_index')
-    
-    # TODO: Once users implemented, use user key to get correct scale.
-    queryset = LetterGrade.objects.filter(scale=1)
-
-    def post(self, request, *args, **kwargs):
-        formset = LetterGradeFormSet(request.POST)
-        for form in formset:
-            # TODO: Once users implemented, use user key to get correct
-            # scale.
-            form.instance.scale_id = 1
-        
-        if formset.is_valid():
-            formset.save()
-            
-            return HttpResponseRedirect(reverse_lazy('semester_index'))
-        
-        context = self.get_context_data(form=formset)
-        return render(request, self.template_name, context)
 
 class SemestersIndex(ListView):
-    queryset = Semester.objects.select_related('uclass')
-    
+    def get(self, request, *args, **kwargs):
+        session_key = ''
+        
+        if not request.session.session_key:
+            request.session.modified = True
+        else:
+            session_key = request.session.session_key
+        
+        self.object_list = self.get_queryset(session_key=session_key)
+        context = self.get_context_data(session_key=session_key)
+        
+        return self.render_to_response(context)
+
     def get_context_data(self, **kwargs):
-        kwargs['cumulative_gpa'] = calculate_gpa(UClass.objects.all())
+        kwargs['cumulative_gpa'] = calculate_gpa(UClass.objects.filter(semester__session=kwargs['session_key']))
         return super().get_context_data(**kwargs)
+        
+    def get_queryset(self, **kwargs):
+        session_key = kwargs.get('session_key')
+        
+        return Semester.objects.filter(session=session_key).select_related('uclass')
 
 class SemesterDeleteView(DeleteView):
     model = Semester
