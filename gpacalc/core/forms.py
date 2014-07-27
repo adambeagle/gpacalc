@@ -3,7 +3,7 @@ from django.forms.widgets import Select
 from django.forms.models import (BaseModelFormSet, modelform_factory, 
     modelformset_factory)
 
-from .models import LetterGrade, Semester, UClass
+from .models import Semester, UClass
 
 class UClassForm(ModelForm):
     error_css_class = 'form-field-error'

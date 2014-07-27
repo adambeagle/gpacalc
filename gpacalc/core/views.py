@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views.generic import DeleteView, FormView, ListView
 
 from .forms import SemesterForm, UClassFormSet
-from .models import (calculate_gpa, LetterGrade, Semester, Session,
+from .models import (calculate_gpa, Semester, Session,
     UClass)
 
 def create_semester(request):

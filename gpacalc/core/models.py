@@ -3,6 +3,27 @@ from decimal import Decimal
 from django.contrib.sessions.models import Session
 from django.db import models
 
+GRADES = {
+    'A+' : 4.3,
+    'A' : 4.0,
+    'A-' : 3.7,
+    'B+' : 3.5,
+    'B' : 3.0,
+    'B-' : 2.7,
+    'C+' : 2.5,
+    'C' : 2.0,
+    'C-' : 1.7,
+    'D+' : 1.5,
+    'D' : 1.0,
+    'S' : 0.0,
+    'H' : 0.0
+}
+
+for g in GRADES:
+    GRADES[g] = Decimal(GRADES[g])
+
+SORTED_GRADES = reversed(sorted(GRADES.keys(), key=lambda x: GRADES[x]))
+
 def calculate_gpa(classes):
     """
     Return cumulative GPA of all classes found in iterable 'classes.'
@@ -17,29 +38,15 @@ def calculate_gpa(classes):
         return 0.0 # Prevents division by 0
 
     for c in classes:
-        totalCredits += c.credits
-        totalGrade += c.credits * c.grade.value
+        grade = GRADES[c.grade]
+        
+        # 'S' and 'H' courses do not count toward GPA,
+        # so ignore courses with grade 0.0
+        if grade:
+            totalCredits += c.credits
+            totalGrade += c.credits * grade
         
     return totalGrade / totalCredits
-
-class LetterGrade(models.Model):
-    """
-    Represents a letter grade and its GPA value equivalent. For example, 
-    a descriptor of 'A' would likely have the value 4.0.
-    
-    'value' is allowed to be blank/null to allow pass/fail grades that do
-    not affect a cumulative GPA (common examples are 'H' and 'S').
-    """
-    descriptor = models.CharField(max_length=2)
-    value = models.DecimalField(max_digits=4, decimal_places=3, 
-        null=True, blank=True
-    )
-    
-    def __str__(self):
-        return self.descriptor
-    
-    class Meta:
-        ordering = ['-value']
 
 class Semester(models.Model):
     description = models.CharField(max_length=25, blank=True)
@@ -59,10 +66,12 @@ class Semester(models.Model):
         return calculate_gpa(self.uclass_set.all())
     
 class UClass(models.Model):
+    GRADE_CHOICES = [(g, g) for g in SORTED_GRADES]
+    
     semester = models.ForeignKey(Semester)
     name = models.CharField(max_length=30, blank=True)
     credits = models.PositiveSmallIntegerField()
-    grade = models.ForeignKey(LetterGrade)
+    grade = models.CharField(max_length=2, choices=GRADE_CHOICES)
         
     def __str__(self):
         return self.name

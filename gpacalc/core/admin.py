@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import LetterGrade, Semester, UClass
+from .models import Semester, UClass
 
 class UClassInline(admin.TabularInline):
     model = UClass
@@ -11,5 +11,4 @@ class SemesterAdmin(admin.ModelAdmin):
     fields = ['description']
     inlines = [UClassInline]
 
-admin.site.register(LetterGrade)
 admin.site.register(Semester, SemesterAdmin)
