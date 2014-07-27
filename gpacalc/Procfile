@@ -1,0 +1,1 @@
+web: gunicorn gpacalc.wsgi --log-file -
